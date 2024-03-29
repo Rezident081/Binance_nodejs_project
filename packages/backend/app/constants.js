@@ -1,0 +1,4 @@
+const DEFAULT_SYMBOL = 'BTC/USDT';
+const DEFAULT_TIMEFRAME = '1d';
+
+module.exports = { DEFAULT_SYMBOL, DEFAULT_TIMEFRAME };
