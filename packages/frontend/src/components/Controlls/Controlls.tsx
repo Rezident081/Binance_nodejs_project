@@ -17,15 +17,21 @@ interface IControllsProps {
   handleSignalClick: (signal: Signals) => void;
 }
 
-function Controlls({ isDisabled, isRealTime, handleRealTimeToggle, handleChangeTimeframe, handleSignalClick }: IControllsProps) {
+function Controlls({
+  isDisabled,
+  isRealTime,
+  handleRealTimeToggle,
+  handleChangeTimeframe,
+  handleSignalClick,
+}: IControllsProps) {
   return (
     <FormControl>
       <Stack spacing={2} direction="row" className={controllsStyle}>
         <Button
-            variant="outlined"
-            disabled={isDisabled}
-            onClick={() => handleChangeTimeframe(Timeframe.FOUR_HOUR)}
-          >
+          variant="outlined"
+          disabled={isDisabled}
+          onClick={() => handleChangeTimeframe(Timeframe.FOUR_HOUR)}
+        >
           4 hour
         </Button>
         <Button
@@ -49,16 +55,26 @@ function Controlls({ isDisabled, isRealTime, handleRealTimeToggle, handleChangeT
         >
           1 month
         </Button>
-        <Button variant="contained" color="success" disabled={isDisabled} onClick={() => handleSignalClick(Signals.BUY)}>
+        <Button
+          variant="contained"
+          color="success"
+          disabled={isDisabled}
+          onClick={() => handleSignalClick(Signals.BUY)}
+        >
           Buy signals
         </Button>
-        <Button variant="contained" color="error" disabled={isDisabled} onClick={() => handleSignalClick(Signals.SELL)}>
+        <Button
+          variant="contained"
+          color="error"
+          disabled={isDisabled}
+          onClick={() => handleSignalClick(Signals.SELL)}
+        >
           Sell signals
         </Button>
         <FormControlLabel
           value="end"
           control={<Switch color="primary" disabled={isDisabled} />}
-          label={isRealTime? 'Enable real time' : 'Disable real time'}
+          label={isRealTime ? "Enable real time" : "Disable real time"}
           labelPlacement="end"
           onChange={handleRealTimeToggle}
         />
