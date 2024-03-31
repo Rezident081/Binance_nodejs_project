@@ -14,12 +14,12 @@ import {
   DEFAULT_TICKER,
 } from "../../utils/constants";
 import { randomIntFromInterval } from "../../utils/utils";
-import { ISignal } from "../../utils/types";
+import { ISignal, CandleDef } from "../../utils/types";
 
 function App() {
   const [allTickers, setAllTickers] = React.useState([]);
   const [timeframe, setTimeframe] = React.useState(Timeframe.ONE_DAY);
-  const [candles, setCandles] = React.useState<any[]>([]);
+  const [candles, setCandles] = React.useState<CandleDef[][]>([]);
   const [symbol, setSymbol] = React.useState<string>(DEFAULT_TICKER);
   const [isRealTime, setIsRealTime] = React.useState(false);
   const [signals, setSignals] = React.useState<ISignal[]>([]);
@@ -96,9 +96,9 @@ function App() {
   const handleSignalClick = React.useCallback(
     (signal: Signals) => {
       const randomIndex = randomIntFromInterval(0, candles.length - 1)
-      const randomCandle = candles[randomIndex];
+      const [timestamp] = candles[randomIndex];
 
-      setSignals(oldSignals => [...oldSignals, {type: signal, id: randomCandle[0]}]);
+      setSignals(oldSignals => [...oldSignals, {type: signal, id: timestamp}]);
     },
     [candles]
   );

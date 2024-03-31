@@ -1,11 +1,11 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
-import { ISignal } from "../../utils/types";
+import { ISignal, CandleDef } from "../../utils/types";
 import { Signals } from "../../utils/constants";
 
 interface IChartProps {
-  candleData: any[];
+  candleData: CandleDef[][];
   signals: ISignal[];
 }
 
@@ -28,40 +28,42 @@ function Chart({ candleData, signals }: IChartProps) {
       },
     },
     annotations: {
-      points: [
-        ...signals.map((signal) => {
-          const findCandle = candleData.find(
-            (candle) => candle[0] === signal.id
-          );
-          if (!findCandle) return { x: 0, y: 0, label: { text: "" } };
+      points: signals.map((signal) => {
+        const findCandle = candleData.find(
+          ([timestamp]) => timestamp === signal.id
+        );
+        if (!findCandle) return { x: 0, y: 0, label: { text: "" } };
 
-          const [date, open, close, high, low, volume] = findCandle;
-          const formattedDate = new Date(date).toLocaleDateString("ua");
+        const [date, open, close, high, low, volume] = findCandle;
+        const maxVal = Math.max(open, close, high, low);
+        const minVal = Math.min(open, close, high, low);
+        const formattedDate = new Date(date).toLocaleDateString("ua");
 
-          return {
-            x: signal.id,
-            y: close > open ? low : high,
-            label: {
-              borderColor: colors_map[signal.type],
-              fillColor: colors_map[signal.type],
-              style: {
-                color: colors_map[signal.type],
-              },
-              text: `Дата: ${formattedDate}, Цена закрытие: ${close}, Объем: ${volume}`,
+        return {
+          x: signal.id,
+          y: signal.type === Signals.BUY ? minVal : maxVal,
+          label: {
+            borderColor: colors_map[signal.type],
+            fillColor: colors_map[signal.type],
+            style: {
+              color: colors_map[signal.type],
             },
-          };
-        }),
-      ],
+            text: `Дата: ${formattedDate}, Цена закрытие: ${close}, Объем: ${volume}`,
+          },
+        };
+      }),
     },
   };
 
   const series = [
     {
       name: "series-1",
-      data: (candleData || []).map((candle: any) => ({
-        x: new Date(candle[0]),
-        y: candle.slice(1, 5),
-      })),
+      data: (candleData || []).map(
+        ([timestamp, open, high, low, close]: CandleDef[]) => ({
+          x: new Date(timestamp),
+          y: [open, high, low, close],
+        })
+      ),
     },
   ];
 
