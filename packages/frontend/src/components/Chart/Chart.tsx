@@ -34,10 +34,10 @@ function Chart({ candleData, signals }: IChartProps) {
         );
         if (!findCandle) return { x: 0, y: 0, label: { text: "" } };
 
-        const [date, open, close, high, low, volume] = findCandle;
+        const [timestamp, open, high, low, close, volume] = findCandle;
         const maxVal = Math.max(open, close, high, low);
         const minVal = Math.min(open, close, high, low);
-        const formattedDate = new Date(date).toLocaleDateString("ua");
+        const formattedDate = new Date(timestamp).toLocaleDateString("ua");
 
         return {
           x: signal.id,
